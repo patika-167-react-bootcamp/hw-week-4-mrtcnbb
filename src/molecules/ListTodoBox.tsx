@@ -1,11 +1,23 @@
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-import React, { FC, useState } from 'react';
-import { Category, NewTodo, Status, Todo } from '../pages/home/Home';
+import { FC, useState } from 'react';
+import { Category, Todo } from '../pages/home/Home';
 import CategorySelectbox, { getCookie } from '../atoms/CategorySelectbox';
 import TodoStatusSelectbox from '../atoms/TodoStatusSelectbox';
 import StatusSelectbox from '../atoms/StatusSelectbox';
+import { baseURL } from '../URL';
 
 interface ListTodoBoxProps {
   categories: Category[];
@@ -13,27 +25,59 @@ interface ListTodoBoxProps {
   fetchTodos: () => void;
 }
 
-const ListTodoBox: FC<ListTodoBoxProps> = ({ categories, list, fetchTodos }) => {
-  const [newTodo, setNewTodo] = useState<NewTodo>({} as NewTodo);
+interface UpdatedTodo {
+  title: string;
+  categoryId: number;
+  statusId: number;
+}
 
-  const deleteTodo = (id: number) => {
+const ListTodoBox: FC<ListTodoBoxProps> = (props) => {
+  const [open, setOpen] = useState(false);
+  const [updatedTodo, setUpdatedTodo] = useState<UpdatedTodo>({} as UpdatedTodo);
+  const [currentTodoName, setCurrentTodoName] = useState('');
+  const [currentTodoId, setCurrentTodoId] = useState<number>(0);
+
+  const handleClickOpen = (todoName: string, todoId: number) => {
+    setOpen(true);
+    setCurrentTodoName(todoName);
+    setUpdatedTodo((prev) => ({ ...prev, title: todoName }));
+    setCurrentTodoId(todoId);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = (id: number) => {
     const token = getCookie('token');
     axios
-      .delete(`http://18.196.80.227:80/todo/${id}`, {
+      .put(`${baseURL}todo/${id}`, updatedTodo, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        fetchTodos();
+        props.fetchTodos();
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  const handleChange = (event: any) => {
-    setNewTodo((prev: any) => ({ ...prev, categoryId: event.target.value }));
+  const deleteTodo = (id: number) => {
+    const token = getCookie('token');
+    axios
+      .delete(`${baseURL}todo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        props.fetchTodos();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -52,8 +96,8 @@ const ListTodoBox: FC<ListTodoBoxProps> = ({ categories, list, fetchTodos }) => 
         boxShadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.15 )',
       }}
     >
-      {list &&
-        list.map((item: Todo) => {
+      {props.list &&
+        props.list.map((item: Todo) => {
           return (
             <Box key={item.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <p>{item.title}</p>
@@ -64,12 +108,11 @@ const ListTodoBox: FC<ListTodoBoxProps> = ({ categories, list, fetchTodos }) => 
                   id="demo-simple-select-helper"
                   label="Kategori"
                   value={item.categoryId}
-                  onChange={(event: any) => handleChange(event)}
                   size="small"
                 >
                   <MenuItem value="">None</MenuItem>
-                  {categories &&
-                    categories.map((category) => {
+                  {props.categories &&
+                    props.categories.map((category) => {
                       return (
                         <MenuItem key={category.id} value={category.id}>
                           {category.title}
@@ -82,12 +125,41 @@ const ListTodoBox: FC<ListTodoBoxProps> = ({ categories, list, fetchTodos }) => 
               <Button variant="contained" color="warning" size="small" onClick={() => deleteTodo(item.id)}>
                 Sil
               </Button>
-              <Button variant="contained" color="primary" size="small">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleClickOpen(item.title, item.id)}
+              >
                 Düzenle
               </Button>
             </Box>
           );
         })}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Todo: {currentTodoName}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Todo'nun yeni kategori adını ve statüsünü seçiniz:</DialogContentText>
+          <CategorySelectbox {...props} onChange={setUpdatedTodo} inputLabelText="Kategori" />
+          <StatusSelectbox
+            categoryId={updatedTodo?.categoryId! || 0}
+            inputLabelText="Statü"
+            {...props}
+            onChange={setUpdatedTodo}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Iptal</Button>
+          <Button
+            onClick={() => {
+              handleSubmit(currentTodoId);
+              handleClose();
+            }}
+          >
+            Guncelle
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

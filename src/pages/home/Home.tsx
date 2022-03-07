@@ -6,6 +6,8 @@ import TodoComp from '../../components/TodoComp';
 import CategoryModalComp from '../../components/CategoryModalComp';
 import StatusModalComp from '../../components/StatusModalComp';
 import axios from 'axios';
+import { baseURL } from '../../URL';
+import Box from '@mui/material/Box';
 
 // INTERFACE
 interface HomeProps {
@@ -75,7 +77,7 @@ const Home: FC<HomeProps> = ({ deleteCookie, setIsLogged }) => {
   const fetchCategories = () => {
     const token = getCookie('token');
     axios
-      .get('http://18.196.80.227:80/category', {
+      .get(`${baseURL}category`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,6 +128,9 @@ const Home: FC<HomeProps> = ({ deleteCookie, setIsLogged }) => {
           }}
         />
       </Tabs>
+      <Box sx={{ margin: '50px' }}>
+        <h1>Todo App</h1>
+      </Box>
       <TodoComp handleShowCategoryModal={handleShowCategoryModal} categories={categories} />
       {showCategoryModal && (
         <CategoryModalComp

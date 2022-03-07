@@ -5,6 +5,7 @@ import { getCookie } from '../atoms/CategorySelectbox';
 import AddStatusBox from '../molecules/AddStatusBox';
 import ListStatusBox from '../molecules/ListStatusBox';
 import { SelectedCategoryIdName, Status } from '../pages/home/Home';
+import { baseURL } from '../URL';
 
 interface StatusModalCompProps {
   selectedCategoryIdName: SelectedCategoryIdName;
@@ -16,7 +17,7 @@ const StatusModalComp: FC<StatusModalCompProps> = ({ selectedCategoryIdName }) =
   const fetchStatuses = () => {
     const token = getCookie('token');
     axios
-      .get(`http://18.196.80.227:80/status?categoryId=${selectedCategoryIdName.id}`, {
+      .get(`${baseURL}status?categoryId=${selectedCategoryIdName.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

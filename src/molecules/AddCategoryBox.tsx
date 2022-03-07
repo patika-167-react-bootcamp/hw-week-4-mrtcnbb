@@ -6,6 +6,7 @@ import React, { FC, useState } from 'react';
 import { getCookie } from '../atoms/CategorySelectbox';
 import Textbox from '../atoms/Textbox';
 import { Category } from '../pages/home/Home';
+import { baseURL } from '../URL';
 
 interface AddCategoryBoxProps {
   handleSetCategory: (category: Category) => void;
@@ -21,7 +22,7 @@ const AddCategoryBox: FC<AddCategoryBoxProps> = ({ handleSetCategory }) => {
   const handleSubmit = () => {
     const token = getCookie('token');
     axios
-      .post(`http://18.196.80.227:80/category`, newCategory, {
+      .post(`${baseURL}category`, newCategory, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

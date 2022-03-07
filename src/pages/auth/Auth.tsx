@@ -10,6 +10,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { baseURL } from '../../URL';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -66,7 +67,7 @@ const Auth: FC<AuthProps> = ({ setIsLogged }) => {
   };
 
   const handleRegister = () => {
-    axios.post('http://18.196.80.227:80/auth/register', registerFormData).then((response) => {
+    axios.post(`${baseURL}auth/register`, registerFormData).then((response) => {
       document.cookie = `token=${response.data.token}`;
       setIsLogged(true);
     });
@@ -74,7 +75,7 @@ const Auth: FC<AuthProps> = ({ setIsLogged }) => {
 
   const handleLogin = () => {
     axios
-      .post('http://18.196.80.227:80/auth/login', loginFormData)
+      .post(`${baseURL}auth/login`, loginFormData)
       .then((response) => {
         document.cookie = `token=${response.data.token}`;
         setIsLogged(true);

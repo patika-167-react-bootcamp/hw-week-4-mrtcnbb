@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import React, { FC, useEffect, useState } from 'react';
 import CategorySelectbox from '../atoms/CategorySelectbox';
 import StatusSelectbox from '../atoms/StatusSelectbox';
-import { Category, Status } from '../pages/home/Home';
+import { Category } from '../pages/home/Home';
 
 interface FilterTodoBoxProps {
   categories: Category[];

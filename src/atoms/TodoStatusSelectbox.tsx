@@ -6,6 +6,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Status } from '../pages/home/Home';
 import axios from 'axios';
 import { getCookie } from './CategorySelectbox';
+import { baseURL } from '../URL';
 
 type TodoStatusSelectboxProps = {
   inputLabelText: string;
@@ -24,7 +25,7 @@ const TodoStatusSelectbox: FC<TodoStatusSelectboxProps> = ({ inputLabelText, cat
   useEffect(() => {
     const token = getCookie('token');
     axios
-      .get(`http://18.196.80.227:80/status?categoryId=${categoryId}`, {
+      .get(`${baseURL}status?categoryId=${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

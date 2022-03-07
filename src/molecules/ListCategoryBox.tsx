@@ -9,6 +9,7 @@ import axios from 'axios';
 import React, { FC, useState } from 'react';
 import { getCookie } from '../atoms/CategorySelectbox';
 import { Category, SelectedCategoryIdName } from '../pages/home/Home';
+import { baseURL } from '../URL';
 
 interface ListCategoryBoxProps {
   handleShowStatusModal: () => void;
@@ -50,7 +51,7 @@ const ListCategoryBox: FC<ListCategoryBoxProps> = ({
   const deleteCategory = (id: number) => {
     const token = getCookie('token');
     axios
-      .delete(`http://18.196.80.227:80/category/${id}`, {
+      .delete(`${baseURL}category/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +67,7 @@ const ListCategoryBox: FC<ListCategoryBoxProps> = ({
   const updateCategory = (id: number) => {
     const token = getCookie('token');
     axios
-      .put(`http://localhost:80/category/${id}`, updatedCategory, {
+      .put(`${baseURL}category/${id}`, updatedCategory, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

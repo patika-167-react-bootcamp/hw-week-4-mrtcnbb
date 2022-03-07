@@ -6,6 +6,7 @@ import StatusSelectbox from '../atoms/StatusSelectbox';
 import Textbox from '../atoms/Textbox';
 import { Category, NewTodo } from '../pages/home/Home';
 import axios from 'axios';
+import { baseURL } from '../URL';
 
 interface AddTodoBoxProps {
   categories: Category[];
@@ -17,7 +18,7 @@ const AddTodoBox: FC<AddTodoBoxProps> = (props) => {
   const handleSubmit = () => {
     const token = getCookie('token');
     axios
-      .post(`http://18.196.80.227:80/todo`, newTodo, {
+      .post(`${baseURL}todo`, newTodo, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

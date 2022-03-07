@@ -10,6 +10,7 @@ import axios from 'axios';
 import { FC, useState } from 'react';
 import { getCookie } from '../atoms/CategorySelectbox';
 import { Status } from '../pages/home/Home';
+import { baseURL } from '../URL';
 
 interface ListStatusBoxProps {
   selectedCategoryId: number;
@@ -48,7 +49,7 @@ const ListStatusBox: FC<ListStatusBoxProps> = ({ selectedCategoryId, fetchStatus
   const deleteStatus = (id: number) => {
     const token = getCookie('token');
     axios
-      .delete(`http://18.196.80.227:80/status/${id}`, {
+      .delete(`${baseURL}status/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,7 +65,7 @@ const ListStatusBox: FC<ListStatusBoxProps> = ({ selectedCategoryId, fetchStatus
   const updateStatus = (id: number) => {
     const token = getCookie('token');
     axios
-      .put(`http://18.196.80.227:80/status/${id}`, updatedStatus, {
+      .put(`${baseURL}status/${id}`, updatedStatus, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

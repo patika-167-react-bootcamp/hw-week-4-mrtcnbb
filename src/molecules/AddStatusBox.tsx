@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { FC, useState } from 'react';
 import { getCookie } from '../atoms/CategorySelectbox';
 import Textbox from '../atoms/Textbox';
+import { baseURL } from '../URL';
 
 interface NewStatus {
   title: string;
@@ -23,7 +24,7 @@ const AddStatusBox: FC<AddCategoryBoxProps> = ({ selectedCategoryId, fetchStatus
     const token = getCookie('token');
     axios
       .post(
-        `http://18.196.80.227:80/status`,
+        `${baseURL}status`,
         { ...newStatus, categoryId: selectedCategoryId },
         {
           headers: {

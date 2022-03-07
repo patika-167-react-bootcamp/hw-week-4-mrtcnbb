@@ -7,6 +7,7 @@ import AddTodoBox from '../molecules/AddTodoBox';
 import FilterTodoBox from '../molecules/FilterTodoBox';
 import ListTodoBox from '../molecules/ListTodoBox';
 import { Category, Todo } from '../pages/home/Home';
+import { baseURL } from '../URL';
 
 interface TodoCompProps {
   handleShowCategoryModal: () => void;
@@ -26,7 +27,7 @@ const TodoComp: FC<TodoCompProps> = (props) => {
   const fetchTodos = () => {
     const token = getCookie('token');
     axios
-      .get('http://18.196.80.227:80/todo', {
+      .get(`${baseURL}todo`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
