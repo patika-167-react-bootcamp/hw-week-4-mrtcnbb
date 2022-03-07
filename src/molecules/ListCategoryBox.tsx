@@ -99,7 +99,10 @@ const ListCategoryBox: FC<ListCategoryBoxProps> = ({
       {categories &&
         categories.map((item) => {
           return (
-            <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box
+              key={item.id}
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
+            >
               <p>{item.title}</p>
               <Button variant="contained" color="warning" onClick={() => deleteCategory(item.id)}>
                 Sil

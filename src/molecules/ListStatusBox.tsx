@@ -100,7 +100,10 @@ const ListStatusBox: FC<ListStatusBoxProps> = ({ selectedCategoryId, fetchStatus
       {statusList &&
         statusList.map((item) => {
           return (
-            <Box key={item.id} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              key={item.id}
+              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}
+            >
               <p>
                 {item.title} - renk: {item.color}
               </p>

@@ -99,7 +99,10 @@ const ListTodoBox: FC<ListTodoBoxProps> = (props) => {
       {props.list &&
         props.list.map((item: Todo) => {
           return (
-            <Box key={item.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box
+              key={item.id}
+              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}
+            >
               <p>{item.title}</p>
               <FormControl sx={{ mt: 1, mb: 1, minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
