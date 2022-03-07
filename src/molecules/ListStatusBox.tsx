@@ -27,13 +27,15 @@ const ListStatusBox: FC<ListStatusBoxProps> = ({ selectedCategoryId, fetchStatus
   const [open, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState<number>(0);
   const [currentCId, setCurrentCId] = useState<number>(0);
+  const [currentTitle, setCurrentTitle] = useState<string>('');
 
   const [updatedStatus, setUpdatedStatus] = useState<UpdatedStatus>({} as UpdatedStatus);
 
-  const handleClickOpen = (id: number, cId: number) => {
+  const handleClickOpen = (id: number, cId: number, title: string) => {
     setOpen(true);
     setCurrentId(id);
     setCurrentCId(cId);
+    setCurrentTitle(title);
   };
 
   const handleClose = () => {
@@ -110,7 +112,7 @@ const ListStatusBox: FC<ListStatusBoxProps> = ({ selectedCategoryId, fetchStatus
                 color="success"
                 size="small"
                 onClick={() => {
-                  handleClickOpen(item.id, item.categoryId);
+                  handleClickOpen(item.id, item.categoryId, item.title);
                 }}
               >
                 Statü Adı Düzenle
@@ -119,7 +121,7 @@ const ListStatusBox: FC<ListStatusBoxProps> = ({ selectedCategoryId, fetchStatus
           );
         })}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Statü Adı: {currentTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText>Yeni statü adını giriniz:</DialogContentText>
           <TextField
